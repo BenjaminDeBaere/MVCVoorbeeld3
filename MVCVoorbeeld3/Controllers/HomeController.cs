@@ -10,7 +10,12 @@ namespace MVCVoorbeeld3.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            this.Session["aantalBezoeken"] = (int)this.Session["aantalBezoeken"] + 1;
+            System.Web.HttpContext.Current.Application.Lock();
+            System.Web.HttpContext.Current.Application["aantalBezoeken"] = (int)System.Web.HttpContext.Current.Application["aantalBezoeken"] + 1;
+            System.Web.HttpContext.Current.Application.UnLock();
+
+            return View();      
         }
 
         public ActionResult About()
@@ -24,6 +29,15 @@ namespace MVCVoorbeeld3.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+
+        public ActionResult Wissen()
+        {
+            this.Session["aantalBezoeken"] = 0;
+            System.Web.HttpContext.Current.Application.Lock();
+            System.Web.HttpContext.Current.Application["aantalBezoeken"] = 0;
+            System.Web.HttpContext.Current.Application.UnLock();
             return View();
         }
     }
